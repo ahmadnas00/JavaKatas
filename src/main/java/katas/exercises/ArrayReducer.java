@@ -7,10 +7,18 @@ public class ArrayReducer {
      * itself and its predecessor. The first element remains unchanged.
      *
      * @param numbers the array of integers to modify
+     *
      */
-    public static void reduceArray(int[] numbers) {
-
+    public static int[] reduceArray(int[] numbers) {
+        if (numbers == null || numbers.length == 0) {
+            throw new IllegalArgumentException("Array must not be null or empty");
+        }
+        for (int i = numbers.length - 1; i > 0; i--) {
+            numbers[i] = numbers[i] - numbers[i - 1];
+        }
+        return numbers;
     }
+
 
     public static void main(String[] args) {
         int[] sampleArray = {10, 15, 7, 20, 25};

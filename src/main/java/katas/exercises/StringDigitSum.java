@@ -9,8 +9,28 @@ public class StringDigitSum {
      * @return the sum of all digits in the string
      */
     public static int sumOfDigits(String input) {
-        return 0;
+
+        if (input==null){
+            throw new IllegalArgumentException("Input Can't be null!!");
+        }
+
+        input = input.replaceAll("[^0-9]", "");
+        if (input.isEmpty()){
+            return 0;
+        }
+
+        int i = Integer.parseInt(input);
+        int sum = 0 ;
+        while (i>0){
+            int digit = i%10;
+            sum = sum + digit;
+            i = i/10;
+        }
+
+        return sum;
+
     }
+
 
     public static void main(String[] args) {
         String input1 = "abc123";

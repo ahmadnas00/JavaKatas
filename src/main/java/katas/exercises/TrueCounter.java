@@ -9,7 +9,19 @@ public class TrueCounter {
      * @return the count of true values in the array
      */
     public static int countTrueValues(boolean[] array) {
-        return 0;
+
+        if (array == null ){
+            throw new IllegalArgumentException("Array Can't be Null!");
+        }
+
+        int counter = 0;
+        for (boolean b : array) {
+            if (b) {
+                counter++;
+            }
+        }
+
+        return counter;
     }
 
     public static void main(String[] args) {

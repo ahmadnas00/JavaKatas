@@ -9,6 +9,20 @@ public class DoNTimes {
      * @param n    the number of times to execute the function
      */
     public static void doNTimes(Runnable func, int n) {
+        if (func == null){
+            throw new IllegalArgumentException("Function cannot be Null");
+        }
+
+        if ( n<1){
+            throw new IllegalArgumentException("N should be a greater than 1");
+        }
+
+        int i = 0;
+        while (i < n )
+        {
+            func.run();
+            i++;
+        }
 
     }
 
