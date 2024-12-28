@@ -23,6 +23,12 @@ public class SlidingWindowMaximum {
         if ( nums == null ){
             throw new IllegalArgumentException("Can't be Null");
         }
+        if (nums.length == 0 || k == 0) {
+            return new ArrayList<>();
+        }
+        if (k > nums.length) {
+            throw new IllegalArgumentException("Window size cannot be larger than array length");
+        }
 
 
         List<Integer> result = new ArrayList<>();
