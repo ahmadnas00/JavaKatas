@@ -11,7 +11,24 @@ public class StockTrader {
      * @return the maximum profit, or 0 if no profit can be achieved
      */
     public static int maxProfit(int[] prices) {
-        return 0;
+        if ( prices == null ){
+            throw new IllegalArgumentException("Can't be null");
+        }
+
+        int minprice = Integer.MAX_VALUE;
+        int maxprofit=0;
+
+        for ( int i=0 ; i < prices.length ; i++){
+            if (prices[i] < minprice){
+                minprice = prices[i];
+            }
+            else if (prices[i] > minprice) {
+                if ( (prices[i]-minprice)>maxprofit){
+                    maxprofit = prices[i]-minprice;
+                }
+            }
+        }
+        return maxprofit;
     }
 
     public static void main(String[] args) {

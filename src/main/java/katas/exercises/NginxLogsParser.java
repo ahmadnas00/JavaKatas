@@ -32,7 +32,27 @@ public class NginxLogsParser {
      * @throws IllegalArgumentException if the log format is invalid
      */
     public static Map<String, String> parseLog(String log) {
+        if (log == null) {
+            throw new IllegalArgumentException("Log cannot be null");
+        }
+
         Map<String, String> parsedData = new HashMap<>();
+        String regex = "^(\\d+\\.\\d+\\.\\d+\\.\\d+) - - \\[(.*?)\\] \"(\\w+) (.*?) HTTP/(\\d+\\.\\d+)\" (\\d{3}) (\\d+) \"-\" \"(.*?)\"$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(log);
+
+        if (matcher.matches()) {
+            parsedData.put("client_ip", matcher.group(1));
+            parsedData.put("date", matcher.group(2));
+            parsedData.put("http_method", matcher.group(3));
+            parsedData.put("path", matcher.group(4));
+            parsedData.put("http_version", matcher.group(5));
+            parsedData.put("status", matcher.group(6));
+            parsedData.put("response_bytes", matcher.group(7));
+            parsedData.put("user_agent", matcher.group(8));
+        } else {
+            throw new IllegalArgumentException("Invalid log format");
+        }
         return parsedData;
     }
 

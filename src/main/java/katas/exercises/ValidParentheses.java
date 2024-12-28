@@ -1,5 +1,7 @@
 package katas.exercises;
 
+import java.util.Stack;
+
 public class ValidParentheses {
 
     /**
@@ -13,9 +15,37 @@ public class ValidParentheses {
      * @return true if the string has valid parentheses, false otherwise
      */
     public static boolean isValidParentheses(String s) {
-        // Hint for efficient implementation: stack
-        return false;
-    }
+
+        if (s == null ){
+            throw new IllegalArgumentException("Can't Be Null");
+        }
+
+        for (char ch : s.toCharArray()) {
+            if (ch != '(' && ch != ')' && ch != '{' && ch != '}' && ch != '[' && ch != ']') {
+                return false;
+            }
+        }
+
+
+        Stack<Character> mystack = new Stack<>();
+        for (char ch : s.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[')
+                mystack.push(ch);
+            else if (ch == ')' || ch == ']' || ch == '}') {
+
+                if (mystack.isEmpty()) {
+                    return false;
+                }
+                char top = mystack.pop();
+                if ((ch == ')' && top != '(') ||
+                        (ch == ']' && top != '[') ||
+                        (ch == '}' && top != '{')) {
+                    return false;
+                }
+            }
+        }
+        return mystack.isEmpty();
+}
 
     public static void main(String[] args) {
         String validInput = "()[]{}";

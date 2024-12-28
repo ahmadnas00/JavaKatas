@@ -1,6 +1,9 @@
 package katas.exercises;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RequirementsCoverage {
 
@@ -23,8 +26,46 @@ public class RequirementsCoverage {
      * @return a list of indices of the minimal subset of test cases that covers all requirements
      */
     public static List<Integer> selectMinimalTestCases(List<List<Integer>> testCases) {
-        return null;
+        if ( testCases == null || testCases.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        Set<Integer> allRequirements = new HashSet<>();
+        for (List<Integer> testCase : testCases) {
+            allRequirements.addAll(testCase);
+        }
+
+        List<Integer> result = new ArrayList<>();
+        findMinimalSubset(testCases, allRequirements, new ArrayList<>(), result, 0);
+
+        return result;
     }
+
+    private static void findMinimalSubset(List<List<Integer>> testCases, Set<Integer> uncovered, List<Integer> currentSelection, List<Integer> bestResult, int index) {
+        if (uncovered.isEmpty()) {
+            if (bestResult.isEmpty() || currentSelection.size() < bestResult.size()) {
+                bestResult.clear();
+                bestResult.addAll(currentSelection);
+            }
+            return;
+        }
+
+        if (index >= testCases.size()) {
+            return;
+        }
+
+        List<Integer> currentTestCase = testCases.get(index);
+        Set<Integer> newUncovered = new HashSet<>(uncovered);
+        newUncovered.removeAll(currentTestCase);
+
+        currentSelection.add(index);
+        findMinimalSubset(testCases, newUncovered, currentSelection, bestResult, index + 1);
+        currentSelection.remove(currentSelection.size() - 1);
+
+        findMinimalSubset(testCases, uncovered, currentSelection, bestResult, index + 1);
+    }
+
+
 
     public static void main(String[] args) {
         List<List<Integer>> testCases = List.of(

@@ -10,6 +10,35 @@ public class SemanticVersionComparator {
      * @return -1 if version1 < version2, 1 if version1 > version2, 0 if they are equal
      */
     public static int compareVersions(String version1, String version2) {
+        if ( version1 == null || version2 == null || version1.isEmpty() || version2.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
+        if (version1.charAt(0) > version2.charAt(0)){
+            return 1;
+        }
+
+        else if (version1.charAt(0) < version2.charAt(0)){
+            return -1;
+        }
+
+
+        else if (version1.charAt(2) > version2.charAt(2)){
+            return 1;
+        }
+
+        else if (version1.charAt(2) < version2.charAt(2)){
+            return -1;
+        }
+
+        else if (version1.charAt(4) > version2.charAt(4)){
+            return 1;
+        }
+
+        else if (version1.charAt(4) < version2.charAt(4)){
+            return -1;
+        }
+
         return 0;
     }
 
