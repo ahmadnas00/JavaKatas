@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class StockTrader2Test {
 
     @Test
-    public void StockTradertest(){
+    public void StockTrader2test(){
 
         int[] stockPrices1 = {7, 1, 5, 3, 6, 4};
         int[] stockPrices2 = {1, 1, 5, 3, 6, 7};
@@ -25,7 +25,7 @@ public class StockTrader2Test {
     }
 
     @Test
-    public void StockTradertestnull(){
+    public void StockTrader2testnull(){
         assertThrows(IllegalArgumentException.class, () -> StockTrader2.maxProfit(null));
     }
 
