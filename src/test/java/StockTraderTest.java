@@ -22,6 +22,7 @@ public class StockTraderTest {
         assertEquals(5 , StockTrader.maxProfit(stockPrices4));
         assertEquals(0 , StockTrader.maxProfit(stockPrices5));
         assertEquals(0 , StockTrader.maxProfit(stockPrices6));
+
     }
 
     @Test
