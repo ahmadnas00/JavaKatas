@@ -1,5 +1,5 @@
-import katas.exercises.SemanticVersionComparator;
-import katas.exercises.StockTrader;
+package katas.exercises;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

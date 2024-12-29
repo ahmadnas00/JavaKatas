@@ -1,8 +1,6 @@
-import katas.exercises.ListFlatten;
-import katas.exercises.SlidingWindowMaximum;
-import org.junit.jupiter.api.Test;
+package katas.exercises;
 
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
