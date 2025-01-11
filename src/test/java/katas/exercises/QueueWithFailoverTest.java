@@ -30,16 +30,18 @@ public class QueueWithFailoverTest {
     }
 
     @Test
-    void testReturnExpiredJobs() throws InterruptedException {
+    void testReturnExpiredJobs() {
         QueueWithFailover queue = new QueueWithFailover(3);
+        queue.sendJob("Job 1");
         String job = queue.getJob();
-
-        Thread.sleep(4000); // 4 seconds
-
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         queue.returnExpiredJobsToQueue();
-
         assertEquals(1, queue.size());
     }
 
-    }
 
+}
