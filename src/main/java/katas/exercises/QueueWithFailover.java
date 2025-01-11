@@ -22,76 +22,57 @@ public class QueueWithFailover {
     private Map<String, Long> hiddenJobs;
 
     public QueueWithFailover(int jobTimeout) {
-        /**
-         * Initialize an empty job queue.
-         */
         this.jobTimeout = jobTimeout;
         this.jobs = new LinkedList<>();
         this.hiddenJobs = new HashMap<>();
     }
 
     public boolean isEmpty() {
-        /**
-         * Check if the job queue is empty.
-         *
-         * @return boolean: True if the job queue is empty, False otherwise.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return jobs.isEmpty();
     }
 
     public void sendJob(String job) {
-        /**
-         * Send a job to the job queue.
-         *
-         * @param job The job to be added to the queue.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        jobs.add(job);
     }
 
     public String getJob() throws EmptyQueueException {
-        /**
-         * Retrieve and return a job from the front of the job queue.
-         *
-         * @return String: The job at the front of the queue.
-         * @throws EmptyQueueException: If the job queue is empty.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (isEmpty()) {
+            throw new EmptyQueueException("The job queue is empty.");
+        }
+        String job = jobs.poll();
+        hiddenJobs.put(job, System.currentTimeMillis());  // Add the job to hiddenJobs with timestamp
+        return job;
     }
 
     public void jobDone(String job) {
-        /**
-         * This function is called when a consumer completes a consumed job.
-         * The job should be deleted permanently (from the hidden).
-         *
-         * @param job The job to be deleted permanently from the queue.
-         * @throws IllegalArgumentException: If the job is not found in the hidden jobs.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (!hiddenJobs.containsKey(job)) {
+            throw new IllegalArgumentException("Job not found in the hidden jobs.");
+        }
+        hiddenJobs.remove(job);
     }
 
     public int size() {
-        /**
-         * Return the number of jobs in the job queue.
-         *
-         * @return int: The number of jobs in the queue.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return jobs.size();
     }
 
     public int inFlightSize() {
-        /**
-         * Return the number of hidden jobs.
-         *
-         * @return int: The number of hidden jobs in the queue.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return hiddenJobs.size(); // Only the jobs being processed (hidden)
     }
 
     public void returnExpiredJobsToQueue() {
-        /**
-         * Return hidden jobs that were retrieved more than `jobTimeout` seconds ago back to the job queue.
-         */
-        throw new UnsupportedOperationException("Not implemented yet.");
+        long currentTime = System.currentTimeMillis();
+        Iterator<Map.Entry<String, Long>> iterator = hiddenJobs.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Long> entry = iterator.next();
+            String job = entry.getKey();
+            long timestamp = entry.getValue();
+
+            if (currentTime - timestamp > jobTimeout * 1000L) {
+                jobs.add(job); // Return expired job to the queue
+                iterator.remove(); // Remove from hiddenJobs as it is now back in the queue
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -104,18 +85,18 @@ public class QueueWithFailover {
         System.out.println("Job Queue Size: " + jobQueue.size());
 
         String currentJob = jobQueue.getJob();
-        jobQueue.jobDone(currentJob);
+        jobQueue.jobDone(currentJob);  // Job is processed successfully
 
         currentJob = jobQueue.getJob();
         try {
-            Thread.sleep(4000);
+            Thread.sleep(4000); // Simulate time passing (more than 3 seconds)
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         jobQueue.returnExpiredJobsToQueue();
 
         try {
-            jobQueue.jobDone(currentJob);
+            jobQueue.jobDone(currentJob);  // This will now not throw an exception
         } catch (IllegalArgumentException e) {
             System.out.println("Job not found as it was expired and returned to the main queue");
         }

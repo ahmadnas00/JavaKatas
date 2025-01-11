@@ -17,13 +17,17 @@ public class URLShortener {
 
     private Map<String, String> urlMap;
     private static final String BASE_URL = "http://short.ly/";
+    private int counter = 1;
 
     /**
      * Constructor to initialize the URL shortener system.
      */
     public URLShortener() {
+
         urlMap = new HashMap<>();
     }
+
+
 
     /**
      * Shortens the provided long URL.
@@ -32,8 +36,9 @@ public class URLShortener {
      * @return the shortened URL
      */
     public String shorten(String longUrl) {
-        // Implement logic to shorten the URL
-        return null;
+        String shortUrl = BASE_URL + Integer.toString(counter++, 62);
+        urlMap.put(shortUrl, longUrl);
+        return shortUrl;
     }
 
     /**
