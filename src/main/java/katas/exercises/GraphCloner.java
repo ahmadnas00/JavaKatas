@@ -23,7 +23,27 @@ class GraphCloner {
      * @return the starting node of the cloned graph
      */
     public static Node cloneGraph(Node node) {
-        return null;
+
+        if(node == null){
+            throw new IllegalArgumentException("Node must not be null ");
+        }
+
+
+        HashMap<Node, Node> clonedmap = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        clonedmap.put(node,new Node(node.val));
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+            for (Node neighbor : current.neighbors) {
+                if (!clonedmap.containsKey(neighbor)) {
+                    clonedmap.put(neighbor, new Node(neighbor.val));
+                    queue.add(neighbor);
+                }
+                clonedmap.get(current).neighbors.add(clonedmap.get(neighbor));
+            }
+        }
+        return clonedmap.get(node);
     }
 
     public static void main(String[] args) {
