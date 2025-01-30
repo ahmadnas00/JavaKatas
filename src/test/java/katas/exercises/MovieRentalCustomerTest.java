@@ -8,6 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class MovieRentalCustomerTest {
+
+    private MovieRentalCustomer customer;
+    private Movie regularMovie;
+    private Movie newReleaseMovie;
+    private Movie childrensMovie;
+    private Rental regularRental;
+    private Rental newReleaseRental;
+    private Rental childrensRental;
+
     @Test
     public void test() {
         MovieRentalCustomer customer = new MovieRentalCustomer("Bob");
@@ -31,5 +40,29 @@ public class MovieRentalCustomerTest {
 
         assertEquals(expected, customer.statement());
     }
+    @Test
+    public void testHtmlStatement() {
+        customer = new MovieRentalCustomer("Martin");
 
+        regularMovie = new Movie("Ran", Movie.REGULAR);
+        newReleaseMovie = new Movie("Trois Couleurs: Bleu", Movie.NEW_RELEASE);
+        childrensMovie = new Movie("Toy Story", Movie.CHILDRENS);
+
+        regularRental = new Rental(regularMovie, 3);
+        newReleaseRental = new Rental(newReleaseMovie, 2);
+        childrensRental = new Rental(childrensMovie, 4);
+
+        customer.addRental(regularRental);
+        customer.addRental(newReleaseRental);
+        customer.addRental(childrensRental);
+        String expected = "<h1>Rental Record for <em>Martin</em></h1>\n" +
+                "<table>\n" +
+                "<tr><td>Ran</td><td>3.5</td></tr>\n" +
+                "<tr><td>Trois Couleurs: Bleu</td><td>6.0</td></tr>\n" +
+                "<tr><td>Toy Story</td><td>3.0</td></tr>\n" +
+                "</table>\n" +
+                "<p>Amount owed is <em>12.5</em></p>\n" +
+                "<p>You earned <em>4</em> frequent renter points</p>\n";
+        assertEquals(expected, customer.htmlStatement());
+    }
 }

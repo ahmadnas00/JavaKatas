@@ -56,10 +56,8 @@ public class ETLTaskTest {
 
     @Test
     public void testETLProcess() throws Exception {
-        // Run the ETL process
         ETLTask.performETL(SOURCE_DB, TARGET_DB);
 
-        // Verify the target database contains the transformed data
         try (Connection targetConn = DriverManager.getConnection("jdbc:sqlite:" + TARGET_DB);
              Statement stmt = targetConn.createStatement()) {
             var rs = stmt.executeQuery("SELECT * FROM transformed_users");
@@ -69,7 +67,7 @@ public class ETLTaskTest {
             assertEquals("Elon Musk", rs.getString("full_name"));
             assertEquals("elon@spacex.com", rs.getString("email"));
             assertEquals("30-60", rs.getString("age_group"));
-            assertEquals(22, rs.getInt("years_registered")); // Based on the current year
+            assertEquals(22, rs.getInt("years_registered"));
 
             assertTrue(rs.next());
             assertEquals(2, rs.getInt("user_id"));
